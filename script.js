@@ -26,6 +26,7 @@ function getHumanChoice () {
 
 function playRound (humanChoice, computerChoice) {
     if (humanChoice === computerChoice){
+        updateResult(`It's a tie! You both chose ${humanChoice}.`);
         return 0;
     }
 
@@ -45,28 +46,50 @@ function playRound (humanChoice, computerChoice) {
 
     if (humanWins) {
         humanScore++;
-        console.log("You win this round!");
+        updateResult(`You win! ${humanChoice} beats ${computerChoice}.`);
         return "HUMAN_WINS";
     } else {
         computerScore++;
-        console.log("Computer wins this round!");
+        updateResult(`Computer wins! ${computerChoice} beats ${humanChoice}.`);
         return "COMPUTER_WINS";
     }
 }
 
-function playGame () {
-    for(let i = 0; i < 5; i ++) {
-        const humanChoice = getHumanChoice();
-        const computerChoice = getComputerChoice();
-        playRound(humanChoice, computerChoice);
-        console.log(`Score: You - ${humanScore}, Computer - ${computerScore}`);
-    }  
-    if (humanScore > computerScore)
-        console.log("You win!");
-    else if (humanScore < computerScore)
-        console.log("Computer win!");
-    else
-        console.log("Tie!");
+function updateResult(message) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = message;
+    updateScore();
 }
 
-playGame ();
+
+function updateScore() {
+    const scoreDiv = document.getElementById('score');
+    scoreDiv.textContent = `Score: You - ${humanScore}, Computer - ${computerScore}`;
+    checkWinner();
+}
+
+function checkWinner() {
+    if (humanScore === 5 || computerScore === 5) {
+        const winnerDiv = document.getElementById('winner');
+        const winnerMessage = humanScore === 5 ? "Congratulations! You won the game!" : "Computer wins the game! Better luck next time.";
+        winnerDiv.textContent = winnerMessage;
+
+        disableButtons();
+    }
+}
+
+function disableButtons() {
+    document.getElementById('rock').disabled = true;
+    document.getElementById('paper').disabled = true;
+    document.getElementById('scissors').disabled = true;
+}
+
+document.getElementById('rock').addEventListener('click', () => playGame('rock'));
+document.getElementById('paper').addEventListener('click', () => playGame('paper'));
+document.getElementById('scissors').addEventListener('click', () => playGame('scissors'));
+
+
+function playGame (humanChoice) {
+    const computerChoice = getComputerChoice();
+    playRound(humanChoice, computerChoice);
+}
