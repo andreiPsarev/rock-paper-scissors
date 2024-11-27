@@ -54,12 +54,19 @@ function playRound (humanChoice, computerChoice) {
     }
 }
 
-function game() {
-    const humanChoice = getHumanChoice();
-    const computerChoice = getComputerChoice();
-    playRound(humanChoice, computerChoice);
-    console.log(`Score: You - ${humanScore}, Computer - ${computerScore}`);
+function playGame () {
+    for(let i = 0; i < 5; i ++) {
+        const humanChoice = getHumanChoice();
+        const computerChoice = getComputerChoice();
+        playRound(humanChoice, computerChoice);
+        console.log(`Score: You - ${humanScore}, Computer - ${computerScore}`);
+    }  
+    if (humanScore > computerScore)
+        console.log("You win!");
+    else if (humanScore < computerScore)
+        console.log("Computer win!");
+    else
+        console.log("Tie!");
 }
 
-// Запуск игры
-game();
+playGame ();
